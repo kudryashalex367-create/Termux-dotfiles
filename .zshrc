@@ -16,14 +16,17 @@ source $ZSH/oh-my-zsh.sh
 export PATH="$PATH:$HOME/.local/bin"
 
 # ── Useful Aliases (Termux) ──────────────────────────────────────
-# Скачивание ВИДЕО в MP4 в папку Загрузок телефона + автосканирование в Галерею
-alias y='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best" --merge-output-format mp4 -P "$HOME/storage/downloads" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
+# Скачивание ВИДЕО в глобальную папку Download телефона + автосканирование в Галерею
+alias y='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best" --merge-output-format mp4 -P "/sdcard/Download" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
 
-# Скачивание АУДИО в MP3 в папку Загрузок телефона + автосканирование в Плеер
-alias ya='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --add-metadata -P "$HOME/storage/downloads" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
+# Скачивание АУДИО в глобальную папку Download/Music телефона + автосканирование в Плеер
+alias ya='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --add-metadata -P "/sdcard/Download/Music" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
 
-# Ручное сканирование папки Загрузки
-alias scan='termux-media-scan -r $HOME/storage/downloads'
+# Скачивание АНИМЕ в глобальную папку Download/Anime (субтитры RU/EN + постер + главы OP/ED)
+alias nya='yt-dlp -f "bv*+ba/best" --merge-output-format mkv --embed-subs --embed-thumbnail --embed-chapters --add-metadata --sub-langs "ru.*,en.*,all" -P "/sdcard/Download/Anime" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
+
+# Ручное сканирование глобальной папки Download
+alias scan='termux-media-scan -r /sdcard/Download'
 
 # ── Aider + Gemini Setup ─────────────────────────────────────────
 export GEMINI_API_KEY=""
