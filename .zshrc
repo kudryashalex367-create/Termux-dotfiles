@@ -20,13 +20,32 @@ export PATH="$PATH:$HOME/.local/bin"
 alias y='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best" --merge-output-format mp4 -P "/sdcard/Download" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
 
 # Скачивание АУДИО в глобальную папку Download/Music телефона + автосканирование в Плеер
-alias ya='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --add-metadata -P "/sdcard/Download/Music" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
+alias ya='yt-dlp -x --audio-format mp3 --audio-quality 320k --embed-thumbnail --add-metadata -P "/sdcard/Download/Music" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
 
 # Скачивание АНИМЕ в глобальную папку Download/Anime (субтитры RU/EN + постер + главы OP/ED)
 alias nya='yt-dlp -f "bv*+ba/best" --merge-output-format mkv --embed-subs --embed-thumbnail --embed-chapters --add-metadata --sub-langs "ru.*,en.*,all" -P "/sdcard/Download/Anime" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
 
 # Ручное сканирование глобальной папки Download
 alias scan='termux-media-scan -r /sdcard/Download'
+
+alias update='pkg update && pkg upgrade -y'
+
+# ── Termux Dotfiles Manager ──────────────────────────────────────
+# 1. Основной алиас как на ПК (ручное управление)
+alias config='git'
+
+# 2. Ленивый авто-пуш в 1 слово (для телефона)
+tpush() {
+    cd ~
+    git add ~/.zshrc ~/.p10k.zsh ~/.config/fastfetch/config.jsonc ~/README.md
+    local msg="${1:-Update Termux dotfiles $(date +'%Y-%m-%d %H:%M')}"
+    git commit -m "$msg" && git push origin main
+}
+
+# 3. Ленивое авто-обновление в 1 слово (стянуть с GitHub + применить)
+tpull() {
+    cd ~ && git pull origin main && exec zsh
+}
 
 # ── Aider + Gemini Setup ─────────────────────────────────────────
 export GEMINI_API_KEY=""
