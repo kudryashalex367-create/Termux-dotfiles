@@ -68,7 +68,7 @@
 Откройте чистый Termux и выполните **всего одну команду**:
 
 ```bash
-pkg install -y curl && curl -L https://github.com/kudryashalex367-create/Termux-dotfiles-/releases/download/v1.0.0/termux-backup.tar.gz | tar -zxf - -C /data/data/com.termux/files && termux-setup-storage && mkdir -p /sdcard/Download/Anime /sdcard/Download/Music && exec zsh
+pkg install -y curl && curl -L https://github.com/kudryashalex367-create/Termux-dotfiles/releases/download/v1.0.0/termux-backup.tar.gz | tar -zxf - -C /data/data/com.termux/files && termux-setup-storage && mkdir -p /sdcard/Download/Anime /sdcard/Download/Music && exec zsh
 ```
 
 *(При появлении запроса Android нажмите «Разрешить доступ к памяти»)*.
@@ -98,7 +98,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 ### Шаг 3. Клонирование конфигураций из репозитория
 
 ```bash
-git clone https://github.com/kudryashalex367-create/Termux-dotfiles-.git ~/temp-dotfiles
+git clone https://github.com/kudryashalex367-create/Termux-dotfiles.git ~/temp-dotfiles
 cp ~/temp-dotfiles/.zshrc ~/.zshrc
 cp ~/temp-dotfiles/.p10k.zsh ~/.p10k.zsh
 mkdir -p ~/.config/fastfetch
