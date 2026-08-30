@@ -17,16 +17,16 @@ export PATH="$PATH:$HOME/.local/bin"
 
 # ── Useful Aliases (Termux) ──────────────────────────────────────
 # Скачивание ВИДЕО в глобальную папку Download телефона + автосканирование в Галерею
-alias y='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best" --merge-output-format mp4 -P "/sdcard/Download" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
+alias y='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best" --merge-output-format mp4 -P "/sdcard/Download/Video" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
 
 # Скачивание АУДИО в глобальную папку Download/Music телефона + автосканирование в Плеер
-alias ya='yt-dlp -x --audio-format mp3 --audio-quality 320k --embed-thumbnail --add-metadata -P "/sdcard/Download/Music" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
+alias ya='yt-dlp -x --audio-format mp3 --audio-quality 320k --embed-thumbnail --add-metadata -P "/sdcard/Download/Audio" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
 
 
 # Ручное сканирование глобальной папки Download
 alias scan='termux-media-scan -r /sdcard/Download'
 
-alias update='pkg update && pkg upgrade -y'
+alias update='pkg update && pkg upgrade -y && apt autoremove -y && apt clean'
 
 # ── Termux Dotfiles Manager ──────────────────────────────────────
 # 1. Основной алиас как на ПК (ручное управление)
@@ -50,11 +50,6 @@ export GEMINI_API_KEY=""
 alias aider-proxy='HTTP_PROXY=http://127.0.0.1:12334 HTTPS_PROXY=http://127.0.0.1:12334 ALL_PROXY=socks5://127.0.0.1:12334 aider --model gemini/gemini-3.1-flash-lite'
 alias aider-smart='HTTP_PROXY=http://127.0.0.1:12334 HTTPS_PROXY=http://127.0.0.1:12334 ALL_PROXY=socks5://127.0.0.1:12334 aider --model gemini/gemini-3-flash-preview'
 
-# System fetch on interactive shell start
-if [[ $- == *i* ]]; then
-    fastfetch -l android_small
-fi
-
 nya() {
     local url="$1"
     local ep="$2"
@@ -70,3 +65,6 @@ nya() {
       -o "Серия_${ep}.%(ext)s" \
       "$url"
 }
+
+fastfetch -l android_small
+
