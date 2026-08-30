@@ -1,0 +1,3 @@
+# ── Использование aria2c для 8-поточного скачивания ──────────────
+--downloader aria2c
+--downloader-args "aria2c:-x 8 -s 8 -j 8 -k 1M --summary-interval=1"
