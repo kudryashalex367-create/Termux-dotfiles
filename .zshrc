@@ -36,17 +36,15 @@ alias update='pkg update && pkg upgrade -y && apt autoremove -y && apt clean'
 # 1. Основной алиас как на ПК (ручное управление)
 alias config='git'
 
-# 2. Ленивый авто-пуш в 1 слово (для телефона)
 tpush() {
-    cd ~
-    git add ~/.zshrc ~/.p10k.zsh ~/.config/fastfetch/config.jsonc ~/README.md
-    local msg="${1:-Update Termux dotfiles $(date +'%Y-%m-%d %H:%M')}"
-    git commit -m "$msg" && git push origin main
+  cd ~
+  git add ~/.zshrc ~/.p10k.zsh ~/.config/fastfetch/config.jsonc ~/README.md ~/.gitignore
+  local msg="${1:-Update Termux dotfiles $(date +'%Y-%m-%d %H:%M')}"
+  git commit -m "$msg" && git push -u origin main
 }
 
-# 3. Ленивое авто-обновление в 1 слово (стянуть с GitHub + применить)
 tpull() {
-    cd ~ && git pull origin main && exec zsh
+  cd ~ && git pull origin main --no-rebase && exec zsh
 }
 
 nya() {
