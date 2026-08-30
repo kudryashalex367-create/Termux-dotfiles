@@ -1,0 +1,8 @@
+*
+!/.zshrc
+!/.p10k.zsh
+!/.config/
+!/.config/fastfetch/
+!/.config/fastfetch/config.jsonc
+!/README.md
+!/.gitignore
