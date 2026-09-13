@@ -24,8 +24,20 @@ export PATH="$PATH:$HOME/.local/bin"
 alias y='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best" --merge-output-format mp4 -P "/sdcard/Download/Video" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
 
 # Скачивание АУДИО в глобальную папку Download/Music телефона + автосканирование в Плеер
-alias ya='yt-dlp -x --audio-format mp3 --audio-quality 320k --embed-thumbnail --add-metadata -P "/sdcard/Download/Audio" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
+ya() {
+    yt-dlp \
+        -f 'ba[ext=opus]/ba[ext=m4a]/ba' \
+        --embed-thumbnail \
+        --add-metadata \
+        --continue \
+        --no-overwrites \
+        --ignore-errors \
+        -P "/sdcard/Download/Audio" \
+        -o "%(title)s.%(ext)s" \
+        "$@"
 
+    termux-media-scan "/sdcard/Download/Audio"
+}
 
 # Ручное сканирование глобальной папки Download
 alias scan='termux-media-scan -r /sdcard/Download'
