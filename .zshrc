@@ -60,18 +60,32 @@ tpull() {
 }
 
 nya() {
-    local url="$1"
-    local ep="$2"
-    # Если номер серии забыли указать, скрипт использует случайное число
-    [[ -z "$ep" ]] && ep=$RANDOM
+    # Если первый аргумент — число, считаем его стартовым номером серии
+    if [[ "$1" =~ ^[0-9]+$ ]]; then
+        local current_ep="$1"
+        shift # Удаляем первый аргумент из списка, оставляем только URL
+    else
+        local current_ep=1
+    fi
 
-    yt-dlp -f "bv*+ba/best" \
-      --merge-output-format mkv \
-      --embed-subs --embed-thumbnail --embed-chapters --add-metadata \
-      --sub-langs "ru.*,en.*,all" \
-      --fragment-retries infinite --concurrent-fragments 5 --legacy-server-connect \
-      -P "/sdcard/Download/Anime" \
-      -o "Серия_${ep}.%(ext)s" \
-      "$url"
+    # Проходим циклом по всем переданным URL
+    for url in "$@"; do
+        echo -e "\n==> Скачивание серии $current_ep..."
+        
+        yt-dlp -f "bv*+ba/best" \
+          --merge-output-format mkv \
+          --embed-subs --embed-thumbnail --embed-chapters --add-metadata \
+          --sub-langs "ru.*,en.*,all" \
+          --fragment-retries infinite --concurrent-fragments 5 --legacy-server-connect \
+          --downloader ffmpeg --hls-use-mpegts \
+          -P "/sdcard/Download/Anime" \
+          -o "Серия_${current_ep}.%(ext)s" \
+          "$url"
+          
+        ((current_ep++))
+    done
+
+    # Финальное сканирование папки для обновления медиатеки Android
+    echo -e "\n==> Сканирование папки Anime..."
+    termux-media-scan -r "/sdcard/Download/Anime"
 }
-
