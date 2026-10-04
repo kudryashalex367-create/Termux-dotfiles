@@ -25,7 +25,7 @@ alias y='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best" --merge-output-for
 
 ya() {
     yt-dlp \
-        -x --audio-format opus \
+        -f 'ba[ext=opus]/ba[ext=m4a]/ba' \
         --sponsorblock-remove sponsor,selfpromo,interaction,intro,outro,music_offtopic \
         --embed-thumbnail \
         --add-metadata \
