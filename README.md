@@ -68,7 +68,9 @@
 Откройте чистый Termux и выполните **всего одну команду**:
 
 ```bash
-pkg install -y curl && curl -L https://github.com/kudryashalex367-create/Termux-dotfiles/releases/download/v1.0.0/termux-backup.tar.gz | tar -zxf - -C /data/data/com.termux/files && termux-setup-storage && mkdir -p /sdcard/Download/Anime /sdcard/Download/Music && exec zsh
+pkg update -y && pkg install -y zsh git curl ffmpeg python-yt-dlp deno aria2 termux-api \
+  fastfetch bat eza ripgrep openssh tmux byobu yazi tealdeer inxi \
+  htop fzf fd jq tree
 ```
 
 *(При появлении запроса Android нажмите «Разрешить доступ к памяти»)*.
