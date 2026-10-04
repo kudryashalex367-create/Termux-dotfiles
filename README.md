@@ -23,8 +23,8 @@
 
 | Команда | Назначение | Формат | Куда сохраняет | Особенности |
 | :--- | :--- | :--- | :--- | :--- |
-| **`y <url>`** | YouTube / Видео | MP4 (до 1080p) | `/sdcard/Download/` | Автоскан в системную Галерею |
-| **`ya <url>`** | Музыка / Треки | MP3 (VBR 0) | `/sdcard/Download/Music/` | Вшивает обложку, теги и сканирует в Плеер |
+| **`y <url>`** | YouTube / Видео | MP4 (до 1080p) | `/sdcard/Download/Video/` | Автоскан в системную Галерею |
+| **`ya <url>`** | Музыка / Треки | M4A (Opus, если есть) | `/sdcard/Download/Audio/` | Обложка, теги, вырезает рекламу через SponsorBlock, автоскан в Плеер |
 | **`nya <url>`** | Аниме / Сериалы | MKV / MP4 | `/sdcard/Download/Anime/` | Вшивает субтитры (RU/EN), главы OP/ED, постер |
 | **`scan`** | Ручной медиа-скан | — | `/sdcard/Download/` | Принудительно обновляет медиа-индекс Android |
 | **`update`** | Обновление пакетов | — | — | Выполняет `pkg update && pkg upgrade` |
@@ -109,7 +109,7 @@ rm -rf ~/temp-dotfiles
 ### Шаг 4. Создание глобальных папок и запуск
 
 ```bash
-mkdir -p /sdcard/Download/Anime /sdcard/Download/Music
+mkdir -p /sdcard/Download/{Anime,Audio,Video}
 chsh -s zsh
 exec zsh
 ```
