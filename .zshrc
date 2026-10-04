@@ -23,10 +23,10 @@ export PATH="$PATH:$HOME/.local/bin"
 # Скачивание ВИДЕО в глобальную папку Download телефона + автосканирование в Галерею
 alias y='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best" --merge-output-format mp4 -P "/sdcard/Download/Video" -o "%(title)s.%(ext)s" --exec "termux-media-scan {}"'
 
-# Скачивание АУДИО в глобальную папку Download/Music телефона + автосканирование в Плеер
 ya() {
     yt-dlp \
-        -f 'ba[ext=opus]/ba[ext=m4a]/ba' \
+        -x --audio-format opus \
+        --sponsorblock-remove sponsor,selfpromo,interaction,intro,outro,music_offtopic \
         --embed-thumbnail \
         --add-metadata \
         --continue \
