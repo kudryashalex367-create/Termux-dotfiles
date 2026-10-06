@@ -12,7 +12,7 @@
 * ⚙️ **Kernel:** Linux (Android LTS)
 * 🖥️ **WM:** `WindowManager (SurfaceFlinger)`
 * 🐚 **Shell:** Zsh 5.9.2 + Oh My Zsh + Powerlevel10k (Lean 8-colors)
-* ⚡ **Core Suite:** `yt-dlp` (Video / Audio / Anime), `termux-api` (MediaStore Scanner), OpenSSH, Fastfetch
+* ⚡ **Core Suite:** `yt-dlp` (Video / Audio / Anime) + `aria2c` (8 потоков) + SponsorBlock, `termux-api` (MediaStore Scanner), OpenSSH, Fastfetch
 * 🎨 **Theme:** Monochrome Obsidian & Zinc
 
 ---
@@ -24,14 +24,17 @@
 | Команда | Назначение | Формат | Куда сохраняет | Особенности |
 | :--- | :--- | :--- | :--- | :--- |
 | **`y <url>`** | YouTube / Видео | MP4 (до 1080p) | `/sdcard/Download/Video/` | Автоскан в системную Галерею |
-| **`ya <url>`** | Музыка / Треки | M4A (Opus, если есть) | `/sdcard/Download/Audio/` | Обложка, теги, вырезает рекламу через SponsorBlock, автоскан в Плеер |
-| **`nya <url>`** | Аниме / Сериалы | MKV / MP4 | `/sdcard/Download/Anime/` | Вшивает субтитры (RU/EN), главы OP/ED, постер |
+| **`ya <url>`** | Музыка / Треки | M4A (Opus, если есть) | `/sdcard/Download/Audio/` | Обложка, теги, вырезает рекламу и интро через SponsorBlock, автоскан в Плеер |
+| **`nya [N] <url...>`** | Аниме / Сериалы | MKV | `/sdcard/Download/Anime/` | Субтитры (RU/EN), главы OP/ED, постер, нумерация серий, aria2c |
 | **`scan`** | Ручной медиа-скан | — | `/sdcard/Download/` | Принудительно обновляет медиа-индекс Android |
-| **`update`** | Обновление пакетов | — | — | Выполняет `pkg update && pkg upgrade` |
+| **`update`** | Обновление пакетов | — | — | `pkg update && pkg upgrade -y && apt clean` |
+| **`tpush` / `tpull`** | Синхронизация дотфайлов | — | `~` | Коммит и пуш / пулл конфигов этого репозитория |
+
+Общий конфиг загрузчика лежит в `~/.config/yt-dlp/config` (aria2c, 8 потоков) и применяется ко всем командам выше.
 
 ---
 
-## 🔌 Удаленное управление с ПК (SSH over USB via ADB)
+## 🔌 Удалённое управление с ПК (SSH over USB via ADB)
 
 Благодаря пробросу портов через ADB можно подключиться к телефону с компьютера на скорости кабеля с нулевым пингом без необходимости раздавать Wi-Fi:
 
@@ -54,26 +57,40 @@
 
 | Параметр | ⚡ Метод 1: Готовый Бэкап (Snapshot) | 🛠 Метод 2: Чистая Установка (Fresh Build) |
 | :--- | :--- | :--- |
-| **Скорость** | **~30 секунд** (1 команда) | ~3–5 минут |
+| **Скорость** | **~1–3 минуты** (зависит от интернета, архив ~690 МБ) | ~3–5 минут |
 | **Что восстанавливается** | **ВСЁ:** бинарники, FFmpeg, Python, Zsh, плагины, конфиги | Чистые пакеты из репозитория + конфиги |
-| **Свежесть пакетов** | Зафиксированный снимок *(обновляется через `update`)* | Всегда самые последние версии из апстрима |
-| **Сложность** | 🟢 Минимальная (скопировал ➔ вставил) | 🟡 Пошаговая (4 шага) |
+| **Свежесть пакетов** | Снимок от 06.10.2026 *(дальше обновляется через `update`)* | Всегда самые последние версии из апстрима |
+| **Сложность** | 🟢 Минимальная (2 команды) | 🟡 Пошаговая (4 шага) |
 
 ---
 
 ## ⚡ МЕТОД 1: Быстрое развертывание из готового бэкапа (Рекомендуется)
 
-> 💡 **Особенности:** Скачивает монолитный архив со всеми скомпилированными пакетами, библиотеками и темами из раздела **Releases** и разворачивает 100% готовую рабочую среду за 30 секунд. Конфигурация может быть слегка заморожена во времени, но запускается моментально.
+> 💡 **Особенности:** Скачивает монолитный архив со всеми скомпилированными пакетами, библиотеками и темами из раздела **Releases** и разворачивает готовую рабочую среду. Архив перезаписывает `~` и `$PREFIX`, поэтому запускать его нужно **только на чистом Termux**.
+>
+> 🔒 В снапшот сознательно **не входят** SSH-ключи, токены, история команд и кэш.
 
-Откройте чистый Termux и выполните **всего одну команду**:
+**1.** Откройте чистый Termux и выполните:
 
 ```bash
-pkg update -y && pkg install -y zsh git curl ffmpeg python-yt-dlp deno aria2 termux-api \
-  fastfetch bat eza ripgrep openssh tmux byobu yazi tealdeer inxi \
-  htop fzf fd jq tree
+pkg install -y curl && curl -L https://github.com/kudryashalex367-create/Termux-dotfiles/releases/download/v1.1.0/termux-backup.tar.gz | tar -zxf - -C /data/data/com.termux/files --recursive-unlink --preserve-permissions && termux-setup-storage
 ```
 
-*(При появлении запроса Android нажмите «Разрешить доступ к памяти»)*.
+**2.** Нажмите «Разрешить доступ к памяти», затем:
+
+```bash
+mkdir -p /sdcard/Download/{Anime,Audio,Video} && exec zsh
+```
+
+**3.** Чтобы работали `tpush` / `tpull` (remote репозитория использует SSH), создайте новый ключ и добавьте его на [GitHub → Settings → SSH keys](https://github.com/settings/keys):
+
+```bash
+ssh-keygen -t ed25519 -C "termux"
+cat ~/.ssh/id_ed25519.pub
+ssh -T git@github.com
+```
+
+> После восстановления выполните `tpull`, чтобы подтянуть самые свежие конфиги из `main`.
 
 ---
 
@@ -85,7 +102,8 @@ pkg update -y && pkg install -y zsh git curl ffmpeg python-yt-dlp deno aria2 ter
 
 ```bash
 termux-setup-storage
-pkg update -y && pkg install -y zsh curl git ffmpeg yt-dlp termux-api fastfetch micro bat eza ripgrep python openssh
+pkg update -y && pkg install -y zsh git curl ffmpeg python-yt-dlp deno aria2 termux-api \
+  fastfetch bat eza ripgrep openssh tmux byobu yazi tealdeer htop fzf fd jq tree
 ```
 
 ### Шаг 2. Установка Oh My Zsh и плагинов
@@ -103,8 +121,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 git clone https://github.com/kudryashalex367-create/Termux-dotfiles.git ~/temp-dotfiles
 cp ~/temp-dotfiles/.zshrc ~/.zshrc
 cp ~/temp-dotfiles/.p10k.zsh ~/.p10k.zsh
-mkdir -p ~/.config/fastfetch
+mkdir -p ~/.config/fastfetch ~/.config/yt-dlp
 cp ~/temp-dotfiles/.config/fastfetch/config.jsonc ~/.config/fastfetch/config.jsonc
+cp ~/temp-dotfiles/.config/yt-dlp/config ~/.config/yt-dlp/config
 rm -rf ~/temp-dotfiles
 ```
 
