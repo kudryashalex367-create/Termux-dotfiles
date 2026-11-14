@@ -1,8 +1,8 @@
-*
-!/.zshrc
-!/.p10k.zsh
-!/.config/
-!/.config/fastfetch/
-!/.config/fastfetch/config.jsonc
-!/README.md
-!/.gitignore
+# Backups and temp files
+*~
+*.swp
+*.swo
+.DS_Store
+
+# Stow backup dirs
+/dotfiles-backup/

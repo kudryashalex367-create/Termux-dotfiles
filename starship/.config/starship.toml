@@ -1,0 +1,66 @@
+# Starship prompt config for Termux (Material / Obsidian Violet)
+# Документация: https://starship.rs/config/
+
+palette = "material"
+add_newline = true
+
+format = """
+$username$hostname$directory$git_branch$git_status$cmd_duration$status$line_break$character"""
+
+right_format = "$time"
+
+[palettes.material]
+lavender = "#c4b5fd"
+mauve    = "#a78bfa"
+text     = "#f5f3ff"
+green    = "#86efac"
+yellow   = "#fde047"
+red      = "#f87171"
+dim      = "#6b7280"
+
+[username]
+show_always = false
+style_user  = "bold lavender"
+style_root  = "bold red"
+format      = "[$user]($style) "
+
+[hostname]
+ssh_only = true
+style    = "bold mauve"
+format   = "@[$hostname]($style) "
+
+[directory]
+style             = "bold lavender"
+truncation_length = 3
+truncate_to_repo  = true
+read_only         = " 󰌾"
+format            = "[$path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+style  = "bold yellow"
+format = "on [$branch]($style) "
+
+[git_status]
+style  = "bold red"
+format = "([$all_status$ahead_behind]($style) )"
+
+[cmd_duration]
+min_time = 2000
+style    = "bold yellow"
+format   = "took [$duration]($style) "
+
+[status]
+style    = "bold red"
+format   = "[$status]($style) "
+disabled = false
+
+[time]
+disabled    = false
+style       = "bold mauve"
+format      = "[$time]($style)"
+time_format = "%H:%M"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol   = "[❯](bold red)"
+vimcmd_symbol  = "[❮](bold green)"

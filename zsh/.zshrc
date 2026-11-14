@@ -2,19 +2,12 @@ if [[ $- == *i* ]]; then
     fastfetch -l android_small
 fi
 
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME=""
 
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Path
 export PATH="$PATH:$HOME/.local/bin"
@@ -38,26 +31,7 @@ ya() {
     termux-media-scan "/sdcard/Download/Audio"
 }
 
-# Ручное сканирование глобальной папки Download
-alias scan='termux-media-scan -r /sdcard/Download'
-
-alias update='pkg update && pkg upgrade -y && apt autoremove -y && apt clean'
-
-# ── Termux Dotfiles Manager ──────────────────────────────────────
-# 1. Основной алиас как на ПК (ручное управление)
-alias config='git'
-
-tpush() {
-  cd ~
-  git add ~/.zshrc ~/.p10k.zsh ~/.config/fastfetch/config.jsonc ~/README.md ~/.gitignore
-  local msg="${1:-Update Termux dotfiles $(date +'%Y-%m-%d %H:%M')}"
-  git commit -m "$msg" && git push -u origin main
-}
-
-tpull() {
-  cd ~ && git pull origin main --no-rebase && exec zsh
-}
-
+# Аниме по сериям: nya [номер_первой_серии] url1 url2 ...
 nya() {
     local current_ep=1
     if [[ "$1" =~ ^[0-9]+$ ]]; then
@@ -67,7 +41,7 @@ nya() {
 
     for url in "$@"; do
         echo -e "\n==> Скачивание серии $current_ep..."
-        
+
         yt-dlp -f "bv*+ba/best" \
           --merge-output-format mkv \
           --embed-subs --embed-thumbnail --embed-chapters --add-metadata \
@@ -78,10 +52,41 @@ nya() {
           -P "/sdcard/Download/Anime" \
           -o "Серия_${current_ep}.%(ext)s" \
           "$url"
-          
+
         ((current_ep++))
     done
 
     echo -e "\n==> Сканирование папки Anime..."
     termux-media-scan -r "/sdcard/Download/Anime"
 }
+
+# Ручное сканирование глобальной папки Download
+alias scan='termux-media-scan -r /sdcard/Download'
+
+alias update='pkg update && pkg upgrade -y && apt autoremove -y && apt clean'
+
+# ── Dotfiles (GNU Stow) ──────────────────────────────────────────
+export DOTFILES="$HOME/Termux-dotfiles"
+alias config='git -C "$DOTFILES"'
+
+dpush() {
+  git -C "$DOTFILES" add -u || return
+  local new
+  new=$(git -C "$DOTFILES" ls-files --others --exclude-standard)
+  if [[ -n $new ]]; then
+    echo "⚠ не добавлены новые файлы (config add -- <файл>):"
+    echo "$new"
+  fi
+  git -C "$DOTFILES" commit -m "${1:-Update Termux dotfiles $(date +'%F %H:%M')}" \
+    && git -C "$DOTFILES" push -u origin main
+}
+alias cpush=dpush
+
+cpull() {
+  git -C "$DOTFILES" pull --no-rebase origin main \
+    && "$DOTFILES/install.sh" \
+    && exec zsh
+}
+
+# Промпт Starship
+eval "$(starship init zsh)"

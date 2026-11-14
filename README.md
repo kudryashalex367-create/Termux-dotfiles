@@ -4,11 +4,16 @@
   <img src="https://img.shields.io/badge/OS-Android-a78bfa?style=flat-square&logo=android&logoColor=white&labelColor=15111f" alt="Android">
   <img src="https://img.shields.io/badge/Terminal-Termux-c4b5fd?style=flat-square&labelColor=15111f" alt="Termux">
   <img src="https://img.shields.io/badge/Shell-Zsh-a78bfa?style=flat-square&logo=gnubash&logoColor=white&labelColor=15111f" alt="Zsh">
+  <img src="https://img.shields.io/badge/Prompt-Starship-c4b5fd?style=flat-square&logo=starship&logoColor=white&labelColor=15111f" alt="Starship">
+  <img src="https://img.shields.io/badge/Packages-GNU_Stow-a78bfa?style=flat-square&labelColor=15111f" alt="GNU Stow">
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-GPL_v3-c4b5fd?style=flat-square&labelColor=15111f" alt="GNU GPL v3">
+  </a>
 </p>
 
-> *"UNIX in your pocket." — Minimalist, High-Performance CLI & Media Environment for Android.*
+> *"UNIX in your pocket." — Минималистичная, производительная CLI и медиа-среда для Android, приведенная к стандарту рабочей станции Arch Linux.*
 
-Добро пожаловать в мой репозиторий мобильных конфигурационных файлов для **Termux (Android)**. Здесь хранится оптимизированная, автономная среда командной строки в стиле **Obsidian Violet**, синхронизированная с моей рабочей станцией на Arch Linux.
+Репозиторий мобильных конфигурационных файлов для **Termux (Android)** в едином стиле **Obsidian Violet**. Конфигурации организованы в виде независимых пакетов **GNU Stow**, идентично структуре основных десктопных дотфайлов.
 
 ---
 
@@ -16,161 +21,153 @@
 
 - [Характеристики мобильного узла](#specs)
 - [Ключевые особенности](#features)
-- [Умный набор команд](#commands)
-- [Удалённое управление с ПК](#remote)
-- [Выбор метода восстановления](#choice)
-- [Метод 1: готовый бэкап](#method1)
-- [Метод 2: чистая установка](#method2)
+- [Структура репозитория](#structure)
+- [Умный набор команд (Media Suite)](#commands)
+- [Быстрая установка](#install)
+- [Управление конфигами](#manage)
+- [Мост с ПК](#remote)
+- [Лицензия](#license)
+
+---
 
 <a id="specs"></a>
 ## ٩(◕‿◕)۶ Характеристики мобильного узла
 
 * (☞ﾟヮﾟ)☞ **OS:** Android (aarch64 / ARMv8)
 * (⌐■_■) **Kernel:** Linux (Android LTS)
-* (｡◕‿◕｡) **WM:** `WindowManager (SurfaceFlinger)`
-* (≧▽≦) **Shell:** Zsh 5.9.2 + Oh My Zsh + Powerlevel10k (Lean 8-colors)
-* (ง •̀_•́)ง **Core Suite:** `yt-dlp` (Video / Audio / Anime) + `aria2c` (8 потоков) + SponsorBlock, `termux-api` (MediaStore Scanner), OpenSSH, Fastfetch
-* (✿◠‿◠) **Theme:** Obsidian Violet & Soft Lavender
+* (｡◕‿◕｡) **Terminal:** Termux
+* (≧▽≦) **Shell:** Zsh + Oh My Zsh + Starship (Material / Obsidian Violet)
+* (ง •̀_•́)ง **Core Suite:** `yt-dlp` (Video / Audio / Anime) + `aria2c` (8 потоков turbo) + SponsorBlock, `termux-api` (MediaStore Scanner), OpenSSH, Fastfetch
+* (✿◠‿◠) **Theme:** Obsidian Violet & Soft Lavender (`#a78bfa`, `#c4b5fd`)
+* (⚙️‿⚙️) **Dotfiles Manager:** GNU Stow
 
 ---
 
 <a id="features"></a>
 ## (¬‿¬) Ключевые особенности сборки
 
-* (︶︹︶) **Эстетика Obsidian Violet:** Та же палитра, что и на десктопе: тёмный фон и лавандовые акценты, синхронизированные со сборкой на Arch Linux.
-* (づ｡◕‿‿◕｡)づ **Загрузки в системную память:** Всё скачанное падает прямо в `/sdcard/Download/` и сразу регистрируется в системе через `termux-media-scan`.
-* (๑•̀ㅂ•́)و **8-поточное скачивание:** `aria2c` подключён ко всем командам через общий конфиг `~/.config/yt-dlp/config`.
-* ヽ(´▽`)/ **SponsorBlock из коробки:** Реклама и интро вырезаются автоматически, обложки и теги подтягиваются сами.
-* (⌐■_■) **Мост с ПК:** SSH поверх USB через ADB, без Wi-Fi и с нулевым пингом.
-* (o゜▽゜)o☆ **Развёртывание за минуты:** Готовый снапшот восстанавливает всю среду в 2 команды.
+* (︶︹︶) **Эстетика Obsidian Violet:** Единая лавандовая палитра для Fastfetch и Starship, синхронизированная со стилем десктопной сборки на Arch Linux.
+* 📦 **Модульность через GNU Stow:** Каждый инструмент вынесен в отдельный пакет (`zsh`, `starship`, `fastfetch`, `yt-dlp`, `pkglists`). Управление через симлинки, никаких ручных `cp`.
+* (づ｡◕‿‿◕｡)づ **Медиа-пайплайн в системную память:** Загрузки сохраняются напрямую в `/sdcard/Download/{Anime,Audio,Video}` и мгновенно регистрируются через `termux-media-scan`. Файлы сразу видны в Галерее и VLC.
+* (๑•̀ㅂ•́)و **8-поточный турбо-буст:** `aria2c` подключен через `~/.config/yt-dlp/config`.
+* ヽ(´▽`)/ **SponsorBlock и автотеги:** Вырезка рекламы и спонсорских вставок, встраивание обложек и метаданных.
+* (⌐■_■) **Синхронизация с десктопом:** Привычные команды управления `config`, `dpush` (`cpush`) и `cpull`.
+
+---
+
+<a id="structure"></a>
+## (•̀o•́)v Структура репозитория (GNU Stow)
+
+```
+Termux-dotfiles/
+├── install.sh              # Скрипт развертывания симлинков (GNU Stow)
+├── AGENTS.md               # Регламент для AI-агентов
+├── LICENSE                 # GNU GPL v3
+├── zsh/
+│   └── .zshrc              # Настройки Zsh, плагины, медиа-алиасы и dpush/cpull
+├── starship/
+│   └── .config/starship.toml # Промпт Starship в палитре Obsidian Violet
+├── fastfetch/
+│   └── .config/fastfetch/config.jsonc # Минималистичный системный инфо-баннер
+├── yt-dlp/
+│   └── .config/yt-dlp/config # Конфигурация 8-поточного aria2c
+└── pkglists/
+    └── .config/pkglist_termux.txt # Список необходимых пакетов Termux
+```
 
 ---
 
 <a id="commands"></a>
 ## (☞ﾟヮﾟ)☞ Умный набор команд и алиасов (Media Suite)
 
-Все скачанные файлы сохраняются напрямую в глобальную системную память Android (`/sdcard/Download/`) и автоматически регистрируются в системе через `termux-media-scan`. Файлы мгновенно появляются в Галерее, Музыкальном плеере и VLC без перезагрузки телефона!
+Все скачанные файлы сохраняются напрямую в глобальную системную память Android (`/sdcard/Download/`) и автоматически регистрируются в системе через `termux-media-scan`.
 
 | Команда | Назначение | Формат | Куда сохраняет | Особенности |
 | :--- | :--- | :--- | :--- | :--- |
 | **`y <url>`** | YouTube / Видео | MP4 (до 1080p) | `/sdcard/Download/Video/` | Автоскан в системную Галерею |
-| **`ya <url>`** | Музыка / Треки | M4A (Opus, если есть) | `/sdcard/Download/Audio/` | Обложка, теги, вырезает рекламу и интро через SponsorBlock, автоскан в Плеер |
-| **`nya [N] <url...>`** | Аниме / Сериалы | MKV | `/sdcard/Download/Anime/` | Субтитры (RU/EN), главы OP/ED, постер, нумерация серий, aria2c |
+| **`ya <url>`** | Музыка / Треки | M4A (Opus) | `/sdcard/Download/Audio/` | Обложка, метаданные, автоскан в Плеер |
+| **`nya [N] <url...>`** | Аниме по сериям | MKV | `/sdcard/Download/Anime/` | Субтитры (RU/EN), главы, нумерация серий, aria2c |
 | **`scan`** | Ручной медиа-скан | — | `/sdcard/Download/` | Принудительно обновляет медиа-индекс Android |
-| **`update`** | Обновление пакетов | — | — | `pkg update && pkg upgrade -y && apt clean` |
-| **`tpush` / `tpull`** | Синхронизация дотфайлов | — | `~` | Коммит и пуш / пулл конфигов этого репозитория |
-
-Общий конфиг загрузчика лежит в `~/.config/yt-dlp/config` (aria2c, 8 потоков) и применяется ко всем командам выше.
+| **`update`** | Обновление системы | — | Termux `$PREFIX` | `pkg update && pkg upgrade -y && apt autoremove` |
 
 ---
 
-<a id="remote"></a>
-## (ง'̀-'́)ง Удалённое управление с ПК (SSH over USB via ADB)
+<a id="install"></a>
+## (ง •̀_•́)ง Быстрая установка
 
-Благодаря пробросу портов через ADB можно подключиться к телефону с компьютера на скорости кабеля с нулевым пингом без необходимости раздавать Wi-Fi:
+### Шаг 1. Доступ к памяти и базовые пакеты
 
-1. Включите **«Отладку по USB»** на телефоне и подключите кабель к ПК.
-2. На компьютере выполните:
-   ```bash
-   adb forward tcp:8022 tcp:8022
-   ssh -p 8022 localhost
-   ```
-3. *(Опционально)* Быстрый алиас для входа в `~/.zshrc` на компьютере:
-   ```bash
-   alias phone='adb forward tcp:8022 tcp:8022 && ssh -p 8022 localhost'
-   ```
-
----
-
-<a id="choice"></a>
-## (｀・ω・´) Выбор метода восстановления системы
-
-В репозитории предусмотрено **два альтернативных сценария** развертывания окружения на чистом телефоне:
-
-| Параметр | (ง •̀_•́)ง Метод 1: Готовый Бэкап (Snapshot) | (☞ﾟヮﾟ)☞ Метод 2: Чистая Установка (Fresh Build) |
-| :--- | :--- | :--- |
-| **Скорость** | **~1–3 минуты** (зависит от интернета, архив ~700 МБ) | ~3–5 минут |
-| **Что восстанавливается** | **ВСЁ:** бинарники, FFmpeg, Python, Zsh, плагины, конфиги | Чистые пакеты из репозитория + конфиги |
-| **Свежесть пакетов** | Снимок от 06.10.2026 *(дальше обновляется через `update`)* | Всегда самые последние версии из апстрима |
-| **Сложность** | (≧▽≦) Минимальная (2 команды) | (´・ω・`) Пошаговая (4 шага) |
-
----
-
-<a id="method1"></a>
-## (ง •̀_•́)ง МЕТОД 1: Быстрое развертывание из готового бэкапа (Рекомендуется)
-
-> (｡◕‿◕｡) **Особенности:** Скачивает монолитный архив со всеми скомпилированными пакетами, библиотеками и темами из раздела **Releases** и разворачивает готовую рабочую среду. Архив перезаписывает `~` и `$PREFIX`, поэтому запускать его нужно **только на чистом Termux**.
->
-> (⌐■_■) В снапшот сознательно **не входят** SSH-ключи, токены, история команд и кэш.
-
-### Шаг 1. Загрузка и распаковка снапшота
-
-Откройте чистый Termux и выполните:
-
-```bash
-pkg install -y curl && curl -L https://github.com/kudryashalex367-create/Termux-dotfiles/releases/download/v1.1.0/termux-backup.tar.gz | tar -zxf - -C /data/data/com.termux/files --recursive-unlink --preserve-permissions && termux-setup-storage
-```
-
-### Шаг 2. Доступ к памяти и запуск
-
-Нажмите «Разрешить доступ к памяти», затем:
-
-```bash
-mkdir -p /sdcard/Download/{Anime,Audio,Video} && exec zsh
-```
-
-### Шаг 3. SSH-ключ для GitHub
-
-Чтобы работали `tpush` / `tpull` (remote репозитория использует SSH), создайте новый ключ и добавьте его на [GitHub → Settings → SSH keys](https://github.com/settings/keys):
-
-```bash
-ssh-keygen -t ed25519 -C "termux"
-cat ~/.ssh/id_ed25519.pub
-ssh -T git@github.com
-```
-
-> (づ｡◕‿‿◕｡)づ После восстановления выполните `tpull`, чтобы подтянуть самые свежие конфиги из `main`.
-
----
-
-<a id="method2"></a>
-## (☞ﾟヮﾟ)☞ МЕТОД 2: Пошаговая чистая установка из репозитория
-
-> (｡◕‿◕｡) **Особенности:** Устанавливает самые свежие версии пакетов напрямую из зеркал `pkg`, клонирует репозиторий Oh My Zsh и накладывает конфигурационные файлы из ветки `main`. Занимает чуть больше времени, но гарантирует апстрим-свежесть.
-
-### Шаг 1. Разрешение доступа к памяти и установка пакетов
+В чистом Termux выполните:
 
 ```bash
 termux-setup-storage
-pkg update -y && pkg install -y zsh git curl ffmpeg python-yt-dlp deno aria2 termux-api \
-  fastfetch bat eza ripgrep openssh tmux byobu yazi tealdeer htop fzf fd jq tree
+pkg update -y && pkg install -y git zsh stow starship curl ffmpeg python-yt-dlp aria2 termux-api fastfetch bat eza ripgrep openssh tmux jq
 ```
 
-### Шаг 2. Установка Oh My Zsh и плагинов
+*(Или восстановите полный список пакетов: `xargs pkg install -y < ~/.config/pkglist_termux.txt` после клонирования)*.
+
+### Шаг 2. Oh My Zsh и плагины
 
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 ```
 
-### Шаг 3. Клонирование конфигураций из репозитория
+### Шаг 3. Клонирование репозитория и линковка через Stow
 
 ```bash
-git clone https://github.com/kudryashalex367-create/Termux-dotfiles.git ~/temp-dotfiles
-cp ~/temp-dotfiles/.zshrc ~/.zshrc
-cp ~/temp-dotfiles/.p10k.zsh ~/.p10k.zsh
-mkdir -p ~/.config/fastfetch ~/.config/yt-dlp
-cp ~/temp-dotfiles/.config/fastfetch/config.jsonc ~/.config/fastfetch/config.jsonc
-cp ~/temp-dotfiles/.config/yt-dlp/config ~/.config/yt-dlp/config
-rm -rf ~/temp-dotfiles
+git clone https://github.com/kudryashalex367-create/Termux-dotfiles.git ~/Termux-dotfiles
+cd ~/Termux-dotfiles
+chmod +x install.sh
+./install.sh
 ```
 
-### Шаг 4. Создание глобальных папок и запуск
+### Шаг 4. Папки для медиа и запуск
 
 ```bash
 mkdir -p /sdcard/Download/{Anime,Audio,Video}
 chsh -s zsh
 exec zsh
 ```
+
+---
+
+<a id="manage"></a>
+## (≧▽≦) Управление конфигами
+
+Идентично десктопным дотфайлам:
+
+```bash
+config status        # git -C ~/Termux-dotfiles status
+config diff          # git -C ~/Termux-dotfiles diff
+config add -- <file> # взять новый файл под контроль
+
+cpush "сообщение"    # add -u + commit + push origin main (алиас dpush)
+cpull                # pull --no-rebase + install.sh + exec zsh
+```
+
+Каталог дотфайлов: `$DOTFILES` (`~/Termux-dotfiles`).
+
+---
+
+<a id="remote"></a>
+## (⌐■_■) Мост с ПК (ADB Forward / USB)
+
+Подключение к Termux с ПК через USB-кабель без Wi-Fi:
+
+1. В Termux:
+   ```bash
+   sshd
+   ```
+2. На ПК в терминале:
+   ```bash
+   phone    # выполняет: adb forward tcp:8022 tcp:8022 && ssh -p 8022 localhost
+   ```
+
+---
+
+<a id="license"></a>
+## (︶︹︶) Лицензия
+
+Проект распространяется по лицензии [GNU GPL v3.0](./LICENSE).
