@@ -1,4 +1,4 @@
-# (ᵔᴥᵔ) Termux Dotfiles by zev1ce — Mobile Obsidian Suite
+# ʕ•ᴥ•ʔ Termux Dotfiles by zev1ce — Mobile Obsidian Suite
 
 <p align="center">
   <img src="https://img.shields.io/badge/OS-Android-a78bfa?style=flat-square&logo=android&logoColor=white&labelColor=15111f" alt="Android">
@@ -31,27 +31,27 @@
 ---
 
 <a id="specs"></a>
-## ٩(◕‿◕)۶ Характеристики мобильного узла
+## (⌐■_■) Характеристики мобильного узла
 
 * (☞ﾟヮﾟ)☞ **OS:** Android (aarch64 / ARMv8)
-* (⌐■_■) **Kernel:** Linux (Android LTS)
+* (ง'̀-'́)ง **Kernel:** Linux (Android LTS)
 * (｡◕‿◕｡) **Terminal:** Termux
-* (≧▽≦) **Shell:** Zsh + Oh My Zsh + Starship (Material / Obsidian Violet)
+* (≧▽≦) **Shell:** Zsh + Oh My Zsh + Starship (Obsidian Violet)
 * (ง •̀_•́)ง **Core Suite:** `yt-dlp` (Video / Audio / Anime) + `aria2c` (8 потоков turbo) + SponsorBlock, `termux-api` (MediaStore Scanner), OpenSSH, Fastfetch
 * (✿◠‿◠) **Theme:** Obsidian Violet & Soft Lavender (`#a78bfa`, `#c4b5fd`)
-* (⚙️‿⚙️) **Dotfiles Manager:** GNU Stow
+* (•̀ᴗ•́)و **Dotfiles Manager:** GNU Stow
 
 ---
 
 <a id="features"></a>
-## (¬‿¬) Ключевые особенности сборки
+## ٩(◕‿◕)۶ Ключевые особенности сборки
 
-* (︶︹︶) **Эстетика Obsidian Violet:** Единая лавандовая палитра для Fastfetch и Starship, синхронизированная со стилем десктопной сборки на Arch Linux.
-* 📦 **Модульность через GNU Stow:** Каждый инструмент вынесен в отдельный пакет (`zsh`, `starship`, `fastfetch`, `yt-dlp`, `pkglists`). Управление через симлинки, никаких ручных `cp`.
-* (づ｡◕‿‿◕｡)づ **Медиа-пайплайн в системную память:** Загрузки сохраняются напрямую в `/sdcard/Download/{Anime,Audio,Video}` и мгновенно регистрируются через `termux-media-scan`. Файлы сразу видны в Галерее и VLC.
+* (︶︹︶) **Эстетика Obsidian Violet:** единая лавандовая палитра для Fastfetch и Starship, синхронизированная со стилем десктопной сборки на Arch Linux.
+* (•̀ᴗ•́)و **Модульность через GNU Stow:** каждый инструмент вынесен в отдельный пакет (`zsh`, `starship`, `fastfetch`, `yt-dlp`, `pkglists`). Управление через симлинки, никаких ручных `cp`.
+* (づ｡◕‿‿◕｡)づ **Медиа-пайплайн в системную память:** загрузки сохраняются напрямую в `/sdcard/Download/{Anime,Audio,Video}` и мгновенно регистрируются через `termux-media-scan`. Файлы сразу видны в Галерее и VLC.
 * (๑•̀ㅂ•́)و **8-поточный турбо-буст:** `aria2c` подключен через `~/.config/yt-dlp/config`.
-* ヽ(´▽`)/ **SponsorBlock и автотеги:** Вырезка рекламы и спонсорских вставок, встраивание обложек и метаданных.
-* (⌐■_■) **Синхронизация с десктопом:** Привычные команды управления `config`, `dpush` (`cpush`) и `cpull`.
+* ヽ(´▽`)/ **SponsorBlock и автотеги:** вырезка рекламы и спонсорских вставок, встраивание обложек и метаданных.
+* (⌐■_■) **Синхронизация с десктопом:** привычные команды управления `config`, `dpush` (`cpush`) и `cpull`.
 
 ---
 
